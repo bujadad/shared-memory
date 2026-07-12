@@ -1,0 +1,137 @@
+{
+  "name": "Google Play 리뷰 분석",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "gplay-review-analyze",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedMethods": "POST"
+        }
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "gplay-review-analyze"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://play.google.com/_/PlayRefresh?authuser=&_reqid=99999&rt=j",
+        "sendHeaders": true,
+        "headerParameters": {
+          "values": [
+            { "name": "Content-Type", "value": "application/x-www-form-urlencoded" },
+            { "name": "X-Same-Domain", "value": "1" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "values": [
+            { "name": "f.req", "value": "[[[\"UsvDTd\",\"[\\\"[$AppID$\\\",\\\"[$Country$\\\",[2,6,[null,[]]],null,null,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18],null,null,null,null,null,null,[null,[]],null,null,[\\\"ko\\\"],null,null,null,[10,null,[10,null]]]]\",null,\"generic\"]]]" }
+          ]
+        },
+        "options": {
+          "response": {
+            "responseFormat": "text"
+          }
+        }
+      },
+      "id": "fetch_reviews",
+      "name": "Fetch Reviews",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nlet data = raw;\nif (typeof raw === 'string') {\n  try { data = JSON.parse(raw.replace(/^\\)\\]\\}'/, '')); } catch (e) {}\n}\nconst reviews = Array.isArray(data?.[1]?.[2]) ? data[1][2] : [];\nconst appId = String($input.first().json.appId || '');\nif (!appId) return [{ json: { error: 'appId required' } }];\nif (!reviews.length) return [{ json: { error: '리뷰 0건' } }];\nconst out = reviews.map(r => ({\n  text: String(r?.[4] || ''),\n  score: Number(r?.[0] || 0)\n})).filter(x => x.text && x.score);\nconst low = out.filter(r => r.score <= 2).slice(0, 20);\nconst high = out.filter(r => r.score >= 4).slice(0, 20);\nreturn [\n  { json: { appId, direction: 'low', reviews: low, count: low.length } },\n  { json: { appId, direction: 'high', reviews: high, count: high.length } }\n];"
+      },
+      "id": "split_rating",
+      "name": "Split by Rating",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst direction = String(input.direction || '');\nconst reviews = Array.isArray(input.reviews) ? input.reviews : [];\nconst label = direction === 'low' ? '저평점 1~2점' : '고평점 4~5점';\nconst lines = reviews.map((r, i) => '[' + (i + 1) + '] (' + r.score + '점) ' + r.text).join('\\n');\nconst promptText = 'Google Play 리뷰 분석. 기준: ' + label + '\\n리뷰:\\n' + lines + '\\n\\n출력:\\n- 공통 불만:\\n- 공통 칭찬:\\n- 개선 요청 TOP5:';\nconst { execSync } = require('child_process');\nlet text = '';\ntry {\n  const out = execSync('claude -p --model claude-sonnet-5', { input: promptText, encoding: 'utf8' });\n  text = String(out || '');\n} catch (e) {\n  text = 'claude -p error: ' + e.message;\n}\nreturn [{ json: { text, direction } }];\n"
+      },
+      "id": "ai_analysis",
+      "name": "AI Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [900, 220]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst appId = items[0]?.json?.appId || '';\nconst low = items.find(x => String(x.json.direction) === 'low');\nconst high = items.find(x => String(x.json.direction) === 'high');\nconst parse = (item) => String(item?.json?.text || '');\nconst parts = [];\nif (low) parts.push('🔴 저평점(1~2점)\\n' + parse(low));\nif (high) parts.push('🟢 고평점(4~5점)\\n' + parse(high));\nconst out = parts.join('\\n\\n');\nreturn [{ json: { text: out || '분석 결과 없음', appId } }];\n"
+      },
+      "id": "format_slack",
+      "name": "Format Slack",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-slack-relay:18792/slack",
+        "headers": {
+          "values": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "RELAY_SECRET", "value": "={{ $credentials.relaySecret.RELAY_SECRET }}" }
+          ]
+        },
+        "body": {
+          "values": [
+            { "name": "text", "value": "={{ $json.text }}" }
+          ]
+        },
+        "options": {
+          "response": {
+            "responseFormat": "json"
+          }
+        }
+      },
+      "id": "send_slack",
+      "name": "Send Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [1340, 300],
+      "credentials": {
+        "httpCustomAuth": [
+          {
+            "id": "relaySecret",
+            "name": "relaySecret"
+          }
+        ]
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Fetch Reviews", "type": "main", "index": 0 }]]
+    },
+    "Fetch Reviews": {
+      "main": [[{ "node": "Split by Rating", "type": "main", "index": 0 }]]
+    },
+    "Split by Rating": {
+      "main": [
+        [{ "node": "AI Analysis", "type": "main", "index": 0 }],
+        [{ "node": "AI Analysis", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI Analysis": {
+      "main": [[{ "node": "Format Slack", "type": "main", "index": 0 }]]
+    },
+    "Format Slack": {
+      "main": [[{ "node": "Send Slack", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

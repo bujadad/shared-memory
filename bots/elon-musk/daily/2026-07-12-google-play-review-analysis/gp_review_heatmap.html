@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>구글플레이 리뷰 페인포인트 우선순위 히트맵</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    background: #f6f7f9;
+    color: #1f2328;
+    padding: 32px;
+    min-height: 100vh;
+  }
+  .header { margin-bottom: 22px; }
+  .title { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+  .sub { color: #57606a; font-size: 13px; margin-top: 6px; }
+  .sub span { color: #1f2328; font-weight: 600; }
+
+  .matrix-wrap {
+    position: relative;
+    width: min(980px, 100%);
+    aspect-ratio: 4/3;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(17,24,39,0.06);
+    padding: 28px 32px 32px 28px;
+  }
+
+  .axis-y, .axis-x {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6e7781;
+    letter-spacing: 0.2px;
+  }
+  .axis-y {
+    left: 10px; top: 28px; bottom: 32px; width: 18px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .axis-x {
+    left: 28px; right: 32px; bottom: 10px; height: 22px;
+  }
+
+  .grid {
+    position: absolute;
+    left: 42px; right: 12px; top: 20px; bottom: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+  }
+
+  .quad {
+    position: relative;
+    border: 1.5px dashed #e1e4e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .quad::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 10px; left: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .q-tl { background: #fff7ed; border-color: #fdba74; }
+  .q-tl::before { content: '주시'; background: #fff7ed; color: #c2410c; border: 1px solid #fdba74; }
+  .q-tr { background: #fff1f2; border-color: #fda4af; }
+  .q-tr::before { content: '최우선 개선'; background: #fff1f2; color: #be123c; border: 1px solid #fda4af; }
+  .q-bl { background: #f6f8fa; border-color: #cbd5e1; }
+  .q-bl::before { content: ''; background: transparent; border: none; color: #64748b; }
+  .q-br { background: #fefce8; border-color: #fde047; }
+  .q-br::before { content: ''; background: transparent; border: none; color: #854d0e; }
+
+  .x-axis-labels {
+    position: absolute;
+    left: 42px; right: 12px; bottom: 0; height: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: #8b949e;
+  }
+
+  .circles {
+    position: relative;
+    width: 100%; height: 100%;
+  }
+  .dot-row { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 10px; }
+  .dot {
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+    border: 2px solid rgba(255,255,255,0.35);
+  }
+  .dot-label {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #e1e4e8;
+    color: #1f2328;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  /* quadrant specific dot sizes */
+  .q-tr .dot { background: #e11d48; }
+  .q-tl .dot { background: #f97316; }
+  .q-br .dot { background: #f59e0b; }
+  .q-bl .dot { background: #94a3b8; }
+
+  /* sizes by rank */
+  .s1 { width: 56px; height: 56px; font-size: 18px; }
+  .s2 { width: 48px; height: 48px; font-size: 16px; }
+  .s3 { width: 42px; height: 42px; font-size: 15px; }
+  .s4 { width: 38px; height: 38px; font-size: 14px; }
+  .s5 { width: 34px; height: 34px; font-size: 13px; }
+  .s6 { width: 32px; height: 32px; font-size: 13px; }
+  .s7 { width: 28px; height: 28px; font-size: 12px; }
+  .s8 { width: 26px; height: 26px; font-size: 12px; }
+  .s9 { width: 24px; height: 24px; font-size: 11px; }
+
+  .divider-y, .divider-x {
+    position: absolute;
+    background: #0f172a;
+    z-index: 2;
+  }
+  .divider-y { left: 50%; top: 0; bottom: 0; width: 1.5px; transform: translateX(-50%); opacity: 0.12; }
+  .divider-x { top: 50%; left: 0; right: 0; height: 1.5px; transform: translateY(-50%); opacity: 0.12; }
+
+  .legend {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #57606a;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">구글플레이 리뷰 페인포인트 우선순위 히트맵</div>
+    <div class="sub">
+      앱: <span>handasoft.mobile.divination_pro</span> ·
+      표본: 저평점(1~2점) <span>23건</span> · 고평점(4~5점) <span>24건</span> ·
+      n8n "구글플레이 리뷰 분석" 워크플로우 결과 기반
+    </div>
+  </div>
+
+  <div class="matrix-wrap">
+    <div class="axis-y">이슈 빈도 낮음 ←——— 높음</div>
+    <div class="axis-x">낮음 ———→ 최우선 개선</div>
+
+    <div class="divider-y"></div>
+    <div class="divider-x"></div>
+
+    <div class="grid">
+      <!-- Top-Left: 주시 -->
+      <div class="quad q-tl" data-label="주시">
+        <div class="circles">
+          <div class="dot-row" style="left:62%;top:58%">
+            <div class="dot s5">5</div><div class="dot-label">광고 과다 노출</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top-Right: 최우선 개선 -->
+      <div class="quad q-tr" data-label="최우선 개선">
+        <div class="circles">
+          <div class="dot-row" style="left:28%;top:32%">
+            <div class="dot s2">2</div><div class="dot-label">잠금 해제 후 잠금화면 재진입</div>
+          </div>
+          <div class="dot-row" style="left:62%;top:28%">
+            <div class="dot s1">1</div><div class="dot-label">잠금화면이 알람/앱을 가림</div>
+          </div>
+          <div class="dot-row" style="left:36%;top:62%">
+            <div class="dot s3">3</div><div class="dot-label">앱 종료/불안정</div>
+          </div>
+          <div class="dot-row" style="left:66%;top:60%">
+            <div class="dot s4">4</div><div class="dot-label">운세 결과 동일/반복</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom-Left: 낮은 우선순위 -->
+      <div class="quad q-bl" data-label="">
+        <div class="circles">
+          <div class="dot-row" style="left:30%;top:38%">
+            <div class="dot s7">7</div><div class="dot-label">부적 위치 고정 요청</div>
+          </div>
+          <div class="dot-row" style="left:58%;top:35%">
+            <div class="dot s8">8</div><div class="dot-label">UI 세부 기능 요청</div>
+          </div>
+          <div class="dot-row" style="left:42%;top:65%">
+            <div class="dot s9">9</div><div class="dot-label">기타 불편 신고</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom-Right: 전략적 개선 -->
+      <div class="quad q-br" data-label="">
+        <div class="circles">
+          <div class="dot-row" style="left:50%;top:50%">
+            <div class="dot s6">6</div><div class="dot-label">유료버전 차별화 부족</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#e11d48"></div>최우선 개선</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>주시</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>전략적 개선</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div>낮은 우선순위</div>
+    <div>·</div>
+    <div>원 크기 = 빈도/영향 정도</div>
+    <div>번호 = 우선순위 순위</div>
+  </div>
+</body>
+</html>
