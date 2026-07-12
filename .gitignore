@@ -5,6 +5,8 @@
 *.pem
 *.p12
 *.pfx
+*secret*
+*.token
 
 # Editors
 *.swp
