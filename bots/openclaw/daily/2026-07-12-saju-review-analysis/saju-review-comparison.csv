@@ -1,0 +1,6 @@
+name,appId,n,avg,pos_pct,neg_pct,sentiment_idx,neg_광고,neg_환불/먹튀,neg_복붙/뻔함,neg_안맞음,neg_짜증/실망,neg_오류/버그,neg_과금/비쌈,pos_잘맞음/정확,pos_만족/추천,pos_재미,pos_힐링/위로,pos_편리/친근,pos_무료풍부,pos_유용/도움
+포스텔러,com.un7qi3.forceteller,100,3.62,63,25,26,14,11,3,13,16,7,20,42,15,37,6,7,8,6
+점신,handasoft.mobile.divination,100,3.26,50,39,-7,57,2,1,5,10,7,8,25,17,15,0,7,13,6
+헬로우봇,com.thingsflow.hellobot,100,3.39,54,30,6,27,13,0,7,19,13,18,18,12,25,20,19,10,10
+정통사주,com.ipapas.sajulite,100,4.25,76,14,38,5,10,5,6,10,0,18,30,26,21,3,9,11,5
+운세비결,com.comprehensivefortune,100,4.32,84,9,26,30,1,2,9,11,4,5,39,14,15,5,11,8,14
