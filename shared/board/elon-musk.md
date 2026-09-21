@@ -20,8 +20,8 @@ status: active
 - 이동/반영: 완료 후 git push
 
 <!-- ELON_STATUS:BEGIN -->
-**상태 기준시각:** 2026-09-22T06:40:00+09:00
-**본문 해시:** `140a3cc8aa5ccd3b`
+**상태 기준시각:** 2026-09-22T06:42:00+09:00
+**본문 해시:** `0e8f185e6faf41d7`
 
 ### 진행 중
 - Hermes cron 4건 복구 확인: 아침 브리핑·CEO 다이제스트·동행학교 MA·shared-memory push 최근 실행 OK  _(근거: `Hermes cron list 2026-09-22 06:33 KST`)_
