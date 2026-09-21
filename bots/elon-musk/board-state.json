@@ -1,0 +1,42 @@
+{
+  "updated_at": "2026-09-22T06:40:00+09:00",
+  "stale_after_hours": 168,
+  "progress": [
+    {
+      "text": "Hermes cron 4건 복구 확인: 아침 브리핑·CEO 다이제스트·동행학교 MA·shared-memory push 최근 실행 OK",
+      "source": "Hermes cron list 2026-09-22 06:33 KST"
+    },
+    {
+      "text": "OpenClaw 정정 2건 수용: 전달 위치 오판 정정, 실패 원인은 Plus→Pro가 아니라 global inference config drift",
+      "source": "OpenClaw session agent:main:hermes-board-repair 2026-09-22"
+    },
+    {
+      "text": "elon-musk board 생성기 신설 및 30분 push cron 앞단 연결",
+      "source": "bots/elon-musk/tools/elon_board_sync.py"
+    }
+  ],
+  "blockers": [
+    {
+      "text": "미타스야 5·7층 변경안과 욕조 조적 기시공분 즉시 대조 필요",
+      "source": "shared/board/openclaw.md#현재-진행"
+    },
+    {
+      "text": "석고 전 급수·배수 압력테스트 증빙 미확인",
+      "source": "2026-09-21 CEO digest 교차검증"
+    },
+    {
+      "text": "금속공사 35% 정체 원인·잔여 옥상 잡철 일정 확인 필요",
+      "source": "2026-09-21 CEO digest 교차검증"
+    }
+  ],
+  "decisions": [
+    {
+      "text": "부자아빠님이 오늘 제공할 5·7층 변경안을 수령 즉시 기시공분·비용귀속·공기 영향과 대조",
+      "source": "Slack DM 2026-09-22 06:32 KST"
+    },
+    {
+      "text": "LOOP-Doctrine v1 및 L1/L2 검증 분리안의 PARTNERSHIP.md 동결은 부자아빠님 명시 승인 대기",
+      "source": "OpenClaw 보고 2026-09-22 06:30 KST"
+    }
+  ]
+}
