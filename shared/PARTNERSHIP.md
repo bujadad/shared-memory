@@ -1,7 +1,10 @@
 # PARTNERSHIP — 일론·젠슨 협업 운영안 v1.1
 
 > 승인: 부자아빠님, 2026-09-14
-> LOOP-Doctrine·L1/L2 검증 분리안 추가 승인: 2026-09-22
+> LOOP-Doctrine·L1/L2 검증 분리안 추가 승인: 2026-09-22 07:13 KST
+> source_thread_ts: `1789316010.835469` (Slack DM thread; gateway가 개별 승인 메시지 ts를 노출하지 않아 승인 문구·시각과 함께 고정)
+> approval_quote: `내 승인 필요한거면 승인한다`
+> governance_sha256: `5f82b55ddc1a21fc3dd6622864a1c5c6763f58da67cc0c240fdae1e6c92f0726` (§6~§7 UTF-8)
 > 상태: 동결·즉시 시행
 
 ## 1. 기본 구조
