@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T06:42:00+09:00",
+  "updated_at": "2026-09-22T07:14:00+09:00",
   "stale_after_hours": 48,
   "progress": [
     {
@@ -13,6 +13,10 @@
     {
       "text": "elon-musk board 생성기 신설 및 30분 push cron 앞단 연결",
       "source": "bots/elon-musk/tools/elon_board_sync.py"
+    },
+    {
+      "text": "부자아빠님 승인으로 LOOP-Doctrine v1·L1/L2 검증 분리안을 PARTNERSHIP.md v1.1에 동결",
+      "source": "shared/PARTNERSHIP.md §§6-7, Slack DM 2026-09-22 07:13 KST"
     }
   ],
   "blockers": [
@@ -33,10 +37,6 @@
     {
       "text": "부자아빠님이 오늘 제공할 5·7층 변경안을 수령 즉시 기시공분·비용귀속·공기 영향과 대조",
       "source": "Slack DM 2026-09-22 06:32 KST"
-    },
-    {
-      "text": "LOOP-Doctrine v1 및 L1/L2 검증 분리안의 PARTNERSHIP.md 동결은 부자아빠님 명시 승인 대기",
-      "source": "OpenClaw 보고 2026-09-22 06:30 KST"
     }
   ]
 }

@@ -20,13 +20,14 @@ status: active
 - 이동/반영: 완료 후 git push
 
 <!-- ELON_STATUS:BEGIN -->
-**상태 기준시각:** 2026-09-22T06:42:00+09:00
-**본문 해시:** `0e8f185e6faf41d7`
+**상태 기준시각:** 2026-09-22T07:14:00+09:00
+**본문 해시:** `65ddfe4c3c6a4ac5`
 
 ### 진행 중
 - Hermes cron 4건 복구 확인: 아침 브리핑·CEO 다이제스트·동행학교 MA·shared-memory push 최근 실행 OK  _(근거: `Hermes cron list 2026-09-22 06:33 KST`)_
 - OpenClaw 정정 2건 수용: 전달 위치 오판 정정, 실패 원인은 Plus→Pro가 아니라 global inference config drift  _(근거: `OpenClaw session agent:main:hermes-board-repair 2026-09-22`)_
 - elon-musk board 생성기 신설 및 30분 push cron 앞단 연결  _(근거: `bots/elon-musk/tools/elon_board_sync.py`)_
+- 부자아빠님 승인으로 LOOP-Doctrine v1·L1/L2 검증 분리안을 PARTNERSHIP.md v1.1에 동결  _(근거: `shared/PARTNERSHIP.md §§6-7, Slack DM 2026-09-22 07:13 KST`)_
 
 ### 블로커
 - 미타스야 5·7층 변경안과 욕조 조적 기시공분 즉시 대조 필요  _(근거: `shared/board/openclaw.md#현재-진행`)_
@@ -35,5 +36,4 @@ status: active
 
 ### 부자아빠님 결정·입력 대기
 - 부자아빠님이 오늘 제공할 5·7층 변경안을 수령 즉시 기시공분·비용귀속·공기 영향과 대조  _(근거: `Slack DM 2026-09-22 06:32 KST`)_
-- LOOP-Doctrine v1 및 L1/L2 검증 분리안의 PARTNERSHIP.md 동결은 부자아빠님 명시 승인 대기  _(근거: `OpenClaw 보고 2026-09-22 06:30 KST`)_
 <!-- ELON_STATUS:END -->
