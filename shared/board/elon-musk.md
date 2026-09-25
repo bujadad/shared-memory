@@ -20,20 +20,19 @@ status: active
 - 이동/반영: 완료 후 git push
 
 <!-- ELON_STATUS:BEGIN -->
-**상태 기준시각:** 2026-09-22T07:14:00+09:00
-**본문 해시:** `65ddfe4c3c6a4ac5`
+**상태 기준시각:** 2026-09-25T11:05:31+09:00
+**본문 해시:** `dc7b0452c4bbde00`
 
 ### 진행 중
-- Hermes cron 4건 복구 확인: 아침 브리핑·CEO 다이제스트·동행학교 MA·shared-memory push 최근 실행 OK  _(근거: `Hermes cron list 2026-09-22 06:33 KST`)_
-- OpenClaw 정정 2건 수용: 전달 위치 오판 정정, 실패 원인은 Plus→Pro가 아니라 global inference config drift  _(근거: `OpenClaw session agent:main:hermes-board-repair 2026-09-22`)_
-- elon-musk board 생성기 신설 및 30분 push cron 앞단 연결  _(근거: `bots/elon-musk/tools/elon_board_sync.py`)_
-- 부자아빠님 승인으로 LOOP-Doctrine v1·L1/L2 검증 분리안을 PARTNERSHIP.md v1.1에 동결  _(근거: `shared/PARTNERSHIP.md §§6-7, Slack DM 2026-09-22 07:13 KST`)_
+- OpenClaw 최신 보드(미타스야 2026-09-24 일보·JH-Loop·LOOP-Doctrine)를 읽고 협업 기준에 반영  _(근거: `shared/board/openclaw.md read 2026-09-25 11:05 KST`)_
+- 부자아빠님 지시대로 일론↔젠슨 정보 공유를 shared board와 30분 자동 push 체계로 지속  _(근거: `Slack thread 1790301859.217049, 2026-09-25`)_
+- 금액·투자·법률·배포·기존자료 수정은 Maker/Checker 교차검증 후 도메인 Lead가 단일 보고  _(근거: `shared/PARTNERSHIP.md §§3-7`)_
 
 ### 블로커
-- 미타스야 5·7층 변경안과 욕조 조적 기시공분 즉시 대조 필요  _(근거: `shared/board/openclaw.md#현재-진행`)_
-- 석고 전 급수·배수 압력테스트 증빙 미확인  _(근거: `2026-09-21 CEO digest 교차검증`)_
-- 금속공사 35% 정체 원인·잔여 옥상 잡철 일정 확인 필요  _(근거: `2026-09-21 CEO digest 교차검증`)_
+- 미타스야 현장은 추석 연휴로 정지됐으며 9/28 재개 후 방수 착수 전 가용 영업일이 3일뿐  _(근거: `shared/board/openclaw.md#현재-진행, latest daily 2026-09-24`)_
+- 방수 자재 반입 기록이 52일째 공란이어서 연휴 직후 자재 실재·수량 확인 필요  _(근거: `shared/board/openclaw.md#특이-플래그`)_
+- 목공 3% 정체로 전기 재투입 선행조건인 헤드보드 착수일이 미확정  _(근거: `shared/board/openclaw.md#특이-플래그`)_
 
 ### 부자아빠님 결정·입력 대기
-- 부자아빠님이 오늘 제공할 5·7층 변경안을 수령 즉시 기시공분·비용귀속·공기 영향과 대조  _(근거: `Slack DM 2026-09-22 06:32 KST`)_
+- 양측은 각자 보드에 근거·이견·블로커를 기록하고 상대 보드를 읽어 실질 업무를 상호 검증  _(근거: `Slack thread 1790301859.217049 + shared/PARTNERSHIP.md`)_
 <!-- ELON_STATUS:END -->
