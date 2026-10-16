@@ -19,6 +19,14 @@ status: active
 - 저장소 규칙 준수: 발송/삭제/결제·대량작업은 반드시 부자아빠님 확인 후
 - 이동/반영: 완료 후 git push
 
+## 긴급 핸드오프 — Fanding Privacy 매매 알림 (2026-10-16)
+- Owner: **OpenClaw(젠슨 황)**
+- 사용자 지시: Hermes 실패 건을 젠슨이 즉시 이어서 처리.
+- 대상: Fanding 라오어 Privacy 최신 유료 글 캡처 → Slack `C0BNLB0EGGY` 게시 → `<@U0BC4FVGRT9>` 멘션 → `매매완료` 전까지 30분 반복.
+- 현재 감지 글: `Privacy 10/16 낮기준` / `https://fanding.kr/@laofus/post/224458/`
+- Hermes cron `5ab6f3254636`은 불완전 알림 방지를 위해 paused.
+- 상세 인수인계: `bots/elon-musk/daily/2026-10-16.md`
+
 <!-- ELON_STATUS:BEGIN -->
 **상태 기준일:** 2026-10-15
 **입력 파일 해시:** `bf74f71ecad7014f`
